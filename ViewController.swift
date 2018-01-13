@@ -56,8 +56,8 @@ class ViewController: UIViewController {
         
         self.view.translatesAutoresizingMaskIntoConstraints = false;
 
-        genButton(self.view);
-        genLabel(self.view);
+        //Font
+        fontDemo();
         
         //listen to 'Home' press
         NotificationCenter.default.addObserver(self,
@@ -70,6 +70,46 @@ class ViewController: UIViewController {
         return;
     }
 
+    
+    /********************************************************************************************************************************/
+    /** @fcn        fontDemo()
+     *  @brief      x
+     *  @details    x
+     */
+    /********************************************************************************************************************************/
+    func fontDemo() {
+
+        //Init
+        let origLabel = UILabel();
+        origLabel.font = UIFont(name: "MarkerFelt-Thin", size: 35);
+        origLabel.textAlignment = .center;
+        origLabel.numberOfLines = 5;
+        origLabel.frame = CGRect(x: 15, y: 150, width: 300, height: 400);
+        origLabel.translatesAutoresizingMaskIntoConstraints = true;
+        origLabel.text = "Original Font Size";
+
+        let diffLabel = UILabel();
+        diffLabel.font = UIFont(name: "MarkerFelt-Thin", size: 35);
+        diffLabel.textAlignment = .center;
+        diffLabel.numberOfLines = 5;
+        diffLabel.frame = CGRect(x: 15, y: 200, width: 300, height: 400);
+        diffLabel.translatesAutoresizingMaskIntoConstraints = true;
+        diffLabel.text = "Smaller Font Size";
+        
+        //Soln
+        diffLabel.font = diffLabel.font.updateSize(-10);
+
+        
+        
+        //Add to view
+        view.addSubview(origLabel);
+        view.addSubview(diffLabel);
+        
+        print("!");
+        
+        return;
+        
+    }
     
     /********************************************************************************************************************************/
     /** @fcn        applicationWillResignActive(_ notification: Notification)
