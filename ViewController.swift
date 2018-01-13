@@ -1,18 +1,15 @@
 /************************************************************************************************************************************/
 /** @file		ViewController.swift
- *  @project    0_0 - Empty Template (Swift)
- * 	@brief		x
+ *  @project    0_1 - General
+ * 	@brief		general examples and uikit extensions
  * 	@details	x
  *
  * 	@author		Justin Reina, Firmware Engineer, Jaostech
- * 	@created	11/12/15
- * 	@last rev	1/1/18
+ * 	@created	1/13/18
+ * 	@last rev	1/13/18
  *
  * 	@section	Opens
  * 	    none current
- *
- *  @note       to minimize extra uikit console prints set OS_ACTIVITY_MODE=disable" by editing the selected run Scheme and setting
- *              as an environment run variable
  *
  * 	@section	Legal Disclaimer
  * 			All contents of this source file and/or any other Jaostech related source files are the explicit property on Jaostech
