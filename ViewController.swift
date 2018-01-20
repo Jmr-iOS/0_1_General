@@ -147,12 +147,13 @@ class ViewController: UIViewController {
         DateUtils.printExamples();
         
         let today   = DateUtils.getToday();
-        var dateStr = DateUtils.getTimeString(date: today);
-        if(verbose) { print("ViewController.dateDemo():    Today's date - '\(dateStr)'"); }
-        
+        var dateStr = DateUtils.getDateString(date: today);
+        var timeStr = DateUtils.getTimeString(date: today);
+        if(verbose) { print("ViewController.dateDemo():    Today's date - '\(dateStr) \(timeStr)'"); }
+
         //Add meridian
-        dateStr = DateUtils.getTimeString(date: today, true);
-        if(verbose) { print("ViewController.dateDemo():    Today's date - '\(dateStr)'"); }
+        timeStr = DateUtils.getTimeString(date: today, true);
+        if(verbose) { print("ViewController.dateDemo():    Today's date - '\(dateStr) \(timeStr)'"); }
 
         if(verbose) { print("ViewController.dateDemo():    date demo complete"); }
         
