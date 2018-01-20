@@ -147,7 +147,7 @@ class ViewController: UIViewController {
         DateUtils.printExamples();
         
         let today   = DateUtils.getToday();
-        var dateStr = DateUtils.getDateString(date: today);
+        let dateStr = DateUtils.getDateString(date: today);
         var timeStr = DateUtils.getTimeString(date: today);
         if(verbose) { print("ViewController.dateDemo():    Today's date - '\(dateStr) \(timeStr)'"); }
 
