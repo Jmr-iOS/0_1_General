@@ -39,7 +39,7 @@ class ViewController: UIViewController {
         DataBackup.loadData();													/* use here if backup needed						*/
         DataBackup.saveData();
 
-        print("ViewController.init():        Initialization complete");
+        print("ViewController.init():        initialization complete");
             
         return;
     }
@@ -58,6 +58,9 @@ class ViewController: UIViewController {
 
         //Font
         fontDemo();
+
+        //Function Arguments
+        funcArgsDemo();
         
         //listen to 'Home' press
         NotificationCenter.default.addObserver(self,
@@ -98,18 +101,36 @@ class ViewController: UIViewController {
         
         //Soln
         diffLabel.font = diffLabel.font.updateSize(-10);
-
-        
         
         //Add to view
         view.addSubview(origLabel);
         view.addSubview(diffLabel);
         
-        print("!");
+        print("ViewController.viewDidLoad(): load complete");
         
         return;
         
     }
+
+    
+    /********************************************************************************************************************************/
+    /** @fcn        funcArgsDemo()
+     *  @brief      x
+     *  @details    see EOF for FcnArgs class
+     */
+    /********************************************************************************************************************************/
+    func funcArgsDemo() {
+        
+        //Pass function as arg
+        let fPtr = FcnArgs.funcToPointTo;                           /* of type '((Int)->String)'                                    */
+        
+        let resp = fPtr(4);
+        
+        print("ViewController.init():        \(resp)");
+        
+        return;
+    }
+    
     
     /********************************************************************************************************************************/
     /** @fcn        applicationWillResignActive(_ notification: Notification)
@@ -134,91 +155,6 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning();
         return;
     }
-
-    
-    /********************************************************************************************************************************/
-    /** @fcn        genButton(_ view:UIView)
-     *  @brief      add a button to the view
-     *  @details    x
-     */
-    /********************************************************************************************************************************/
-    func genButton(_ view:UIView) {
-        
-        let button      : UIButton  = UIButton(type: UIButtonType.system) as UIButton;
-        let buttonWidth : CGFloat   = 300;
-        
-        button.frame = CGRect(x: self.view.center.x-(buttonWidth/2), y: 100, width: buttonWidth, height: 50);
-
-        
-        button.backgroundColor = UIColor.green;
-        
-        button.setTitle("Test Button", for: UIControlState());
-  
-        button.addTarget(self, action: #selector(ViewController.response(_:)), for:  .touchUpInside);
-
-        view.addSubview(button);
-        
-        print("ViewController.genButton():   button added");
-        
-        return;
-    }
-    
-    
-    /********************************************************************************************************************************/
-    /** @fcn        genLabel(_ view:UIView)
-     *  @brief      add a label to the view
-     *  @details    x
-     */
-    /********************************************************************************************************************************/
-    func genLabel(_ view:UIView) {
-        
-        let myFirstLabel  = UILabel();
-
-        myFirstLabel.text          = "I made a label on the screen #toogood4you";
-        myFirstLabel.font          = UIFont(name: "MarkerFelt-Thin", size: 45);
-        myFirstLabel.textColor     = UIColor.red;
-        myFirstLabel.textAlignment = .center;
-
-        //text-wrap
-        myFirstLabel.numberOfLines = 0;
-        myFirstLabel.lineBreakMode = .byWordWrapping;
-        
-        myFirstLabel.frame = CGRect(x: (self.view.center.x - 150), y: 200, width: 300, height: 325);
-        
-        myFirstLabel.backgroundColor = UIColor.gray;
-        
-        view.addSubview(myFirstLabel);
-        
-        print("ViewController.genLabel():    label added");
-
-        return;
-    }
-
-
-    /********************************************************************************************************************************/
-    /** @fcn        response(_ sender: UIButton!)
-     *  @brief      pop up a message in response
-     *  @details    x
-     */
-    /********************************************************************************************************************************/
-    @objc func response(_ sender: UIButton!) {
-
-        let alert:UIAlertController = UIAlertController(title:          "Pop-up",
-                                                        message:        "message",
-                                                        preferredStyle: UIAlertControllerStyle.alert);
-        
-        alert.addAction(UIAlertAction(title:   "OK",
-                                      style:   UIAlertActionStyle.cancel,
-                                      handler: nil));
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate;
-        
-        appDelegate.window?.rootViewController?.present(alert, animated:true, completion:nil);
-        
-        print("ViewController.response():    button response complete");
-            
-        return;
-    }
     
     
     /********************************************************************************************************************************/
@@ -229,9 +165,15 @@ class ViewController: UIViewController {
      *  @param      [in] (NSCoder) aDecoder - memory query device (backup access)
      */
     /********************************************************************************************************************************/
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented");
-    }
+    required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented"); }
+}
 
+
+//Function Arguments Class
+class FcnArgs {
+    class func funcToPointTo(_ i : Int) -> String {
+        print("FcnArgs.funcToPointTo():      i was passed \(i)");
+        return "I was returned";
+    }
 }
 
