@@ -36,10 +36,11 @@ class ViewController: UIViewController {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil);
         
         //@todo     init code
+
         DataBackup.loadData();													/* use here if backup needed						*/
         DataBackup.saveData();
 
-        print("ViewController.init():        initialization complete");
+        if(verbose) { print("ViewController.init():        initialization complete"); }
             
         return;
     }
@@ -62,13 +63,16 @@ class ViewController: UIViewController {
         //Function Arguments
         funcArgsDemo();
         
+        //Date Demo
+        dateDemo();
+        
         //listen to 'Home' press
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(UIApplicationDelegate.applicationWillResignActive(_:)),
                                                name: NSNotification.Name.UIApplicationWillResignActive,
                                                object: nil);
     
-        print("ViewController.viewDidLoad(): load complete");
+        if(verbose) { print("ViewController.viewDidLoad(): load complete"); }
             
         return;
     }
@@ -106,7 +110,7 @@ class ViewController: UIViewController {
         view.addSubview(origLabel);
         view.addSubview(diffLabel);
         
-        print("ViewController.viewDidLoad(): load complete");
+        if(verbose) { print("ViewController.fontDemo():    font demo complete"); }
         
         return;
         
@@ -126,7 +130,31 @@ class ViewController: UIViewController {
         
         let resp = fPtr(4);
         
-        print("ViewController.init():        \(resp)");
+        if(verbose) { print("ViewController.fcnArgsDem():  fcn args demo complete with '\(resp)'"); }
+        
+        return;
+    }
+    
+
+    /********************************************************************************************************************************/
+    /** @fcn        dateDemo()
+     *  @brief      x
+     *  @details    x
+     */
+    /********************************************************************************************************************************/
+    func dateDemo() {
+        
+        DateUtils.printExamples();
+        
+        let today   = DateUtils.getToday();
+        var dateStr = DateUtils.getTimeString(date: today);
+        if(verbose) { print("ViewController.dateDemo():    Today's date - '\(dateStr)'"); }
+        
+        //Add meridian
+        dateStr = DateUtils.getTimeString(date: today, true);
+        if(verbose) { print("ViewController.dateDemo():    Today's date - '\(dateStr)'"); }
+
+        if(verbose) { print("ViewController.dateDemo():    date demo complete"); }
         
         return;
     }
