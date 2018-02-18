@@ -6,10 +6,14 @@
  *
  * 	@author		Justin Reina, Firmware Engineer, Jaostech
  * 	@created	1/13/18
- * 	@last rev	1/13/18
+ * 	@last rev	2/18/18
  *
  * 	@section	Opens
- * 	    none current
+ *      initialize to custom menu
+ *      something fun on it
+ *      buttons
+ *      buttons w/img
+ *      clear lib & api for future useage
  *
  * 	@section	Legal Disclaimer
  * 			All contents of this source file and/or any other Jaostech related source files are the explicit property on Jaostech
@@ -19,8 +23,11 @@
 import UIKit
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
 
+    //Vars
+    var sampleTextField : UITextField!;
+    
     
     /********************************************************************************************************************************/
     /** @fcn        init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
@@ -66,6 +73,9 @@ class ViewController: UIViewController {
         //Date Demo
         dateDemo();
         
+        //Keyboard Demo
+        keyboardDemo();
+        
         //listen to 'Home' press
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(UIApplicationDelegate.applicationWillResignActive(_:)),
@@ -77,6 +87,47 @@ class ViewController: UIViewController {
         return;
     }
 
+
+    /********************************************************************************************************************************/
+    /** @fcn        keyboardDemo()
+     *  @brief      initialize the text field for keyboard demo use
+     *  @details    x
+     */
+    /********************************************************************************************************************************/
+    func keyboardDemo() {
+        
+        let fieldFrame = CGRect(x: 20, y: 100, width: 300, height: 40);
+        
+        //Init
+        sampleTextField = UITextField(frame: fieldFrame);                                       /* init new field                   */
+        
+        //Setup
+        sampleTextField.font = UIFont.systemFont(ofSize: 15);                                   /* set font                         */
+        sampleTextField.borderStyle = UITextBorderStyle.roundedRect;                            /* apply rounded edges to frame     */
+        sampleTextField.autocorrectionType = UITextAutocorrectionType.no;                       /* disable auto-correct             */
+        sampleTextField.keyboardType = UIKeyboardType.default;                                  /* select normal default keyboard   */
+        sampleTextField.returnKeyType = UIReturnKeyType.done;                                   /* set return key type              */
+        sampleTextField.clearButtonMode = UITextFieldViewMode.whileEditing;                     /* only show 'x' when editing       */
+        sampleTextField.textAlignment = .left;                                                  /* set alignment of text            */
+        sampleTextField.contentVerticalAlignment = UIControlContentVerticalAlignment.center;    /* apply vertical alignment         */
+        sampleTextField.translatesAutoresizingMaskIntoConstraints = true;                       /* allow constraints                */
+        sampleTextField.delegate = self;                                                        /* set delegate for response        */
+        
+        //Text
+        sampleTextField.text = nil;                                                             /* left empty for placeholder       */
+        sampleTextField.placeholder = "Enter text here, bitches!";                              /* text shown when empty            */
+
+        //Keyboard
+        initKeyboardMenubar();
+
+        //Add to view
+        view.addSubview(sampleTextField);
+        
+        print("ViewController.kbrdDemo():    textfield added to the view");
+        
+        return;
+    }
+    
     
     /********************************************************************************************************************************/
     /** @fcn        fontDemo()
@@ -185,6 +236,146 @@ class ViewController: UIViewController {
         return;
     }
     
+    
+//**********************************************************************************************************************************//
+//                                                       UITextFieldDelegate                                                        //
+//**********************************************************************************************************************************//
+    func textFieldShouldReturn(_ textField : UITextField) -> Bool {
+        
+        sampleTextField.resignFirstResponder();                             /* here is the action which dismisses keyboard          */
+        
+        print("ViewController.textFieldShouldReturn():                  return key pressed and exiting");
+        
+        return true;                                                        /* normal behavior                                      */
+    }
+
+    
+//**********************************************************************************************************************************//
+//                                                        Keyboard Lib                                                              //
+//**********************************************************************************************************************************//
+
+    var keyboardToolbar : UIToolbar!;
+    
+    /********************************************************************************************************************************/
+    /** @fcn        initKeyboardMenubar()
+     *  @brief      initialize the keyboard for demo use
+     *  @details    x
+     */
+    /********************************************************************************************************************************/
+    func initKeyboardMenubar() {
+        
+        //Constants
+        let images : [String] = ["attention.png", "about.png",           "albums.png", "audio.png",
+                                 "bell.png",      "bookmark_ribbon.png", "cancel.png", "car.png"];
+        
+        //Vars
+        var barButtons : [UIBarButtonItem];                                 /* used by all                                          */
+        var button : UIButton;
+        var img    : UIImage;
+        
+        //Init (9 btns)
+        keyboardToolbar = UIToolbar();
+        barButtons      = [UIBarButtonItem]();
+        
+        //Config
+        keyboardToolbar.barTintColor = UIColor.lightGray;                   /* set bkgnd color                                      */
+        let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil);
+        barButtons.append(flexBarButton);                                   /* size-to-fit                                          */
+
+        var someCtr = 0;
+        
+        for image in images {
+            
+            //Gen Button
+            img = UIImage(named: image)!;
+            button = UIButton(type: .custom);
+            button.tag = someCtr;
+            button.setImage(img, for: .normal);
+            button.addTarget(self, action:  #selector(self.keyboardResponse), for: .touchUpInside);
+            barButtons.append(UIBarButtonItem(customView: button));
+
+            //Apply Spacing
+            let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil);
+            barButtons.append(flexBarButton);                               /* size-to-fit                                          */
+            
+            //Update Tag
+            someCtr = (someCtr+1);
+        }
+        
+        //Assemble
+        keyboardToolbar.items = barButtons;
+        
+        //Attach
+        sampleTextField.inputAccessoryView = keyboardToolbar;
+        
+        //Cleanup
+        keyboardToolbar.sizeToFit();
+        
+        print("ViewController.initKbrd():    keyboard menu was initialized");
+        
+        return;
+    }
+
+
+    /********************************************************************************************************************************/
+    /** @fcn        setDoneOnKeyboard()
+     *  @brief      add 'Done' option to menu bar of keyboard
+     *  @details    x
+     */
+    /********************************************************************************************************************************/
+    func setDoneOnKeyboard() {
+
+        let keyboardToolbar = UIToolbar();
+        
+        keyboardToolbar.sizeToFit();
+
+        let button = UIButton(type: .custom);
+        button.setImage(UIImage (named: "attention.png"), for: .normal);
+        button.frame = CGRect(x: 0.0, y: 0.0, width: 30.0, height: 30.0);
+        //button.addTarget(target, action: nil, for: .touchUpInside);
+        let barButtonItem = UIBarButtonItem(customView: button);
+
+        let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil);
+        
+        let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.dismissKeyboard));
+        
+        keyboardToolbar.items = [flexBarButton, barButtonItem, doneBarButton];
+
+        self.sampleTextField.inputAccessoryView = keyboardToolbar;
+
+        return;
+    }
+
+
+    /********************************************************************************************************************************/
+    /** @fcn        keyboardResponse(sender: UIButton)
+     *  @brief      respond to key selection
+     *  @details    used for keyboard demo response
+     */
+    /********************************************************************************************************************************/
+    @objc func keyboardResponse(sender: UIButton) {
+        
+        print("ViewController.keyboardResponse():                       keyboard key response for '\(sender.tag)'");
+        
+        return;
+    }
+    
+    /********************************************************************************************************************************/
+    /** @fcn        dismissKeyboard()
+     *  @brief      dismiss the keyboard
+     *  @details    used for keyboard demo response
+     */
+    /********************************************************************************************************************************/
+    @objc func dismissKeyboard() {
+        
+        //Resign keyboard
+        view.endEditing(true);
+        
+        print("ViewController.dismissKeyboard():                        return key pressed and exiting");
+
+        return;
+    }
+
     
     /********************************************************************************************************************************/
     /** @fcn        init?(coder aDecoder: NSCoder)
